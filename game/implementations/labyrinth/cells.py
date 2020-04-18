@@ -15,7 +15,28 @@ class CellTreasure(Cell):
     def action(self): pass
 
 
-class CellFinish(Cell):
+class CellWormhole(Cell):
+
+    def __init__(self): pass
+
+    def action(self): pass
+
+
+class CellWall(Cell):
+
+    def __init__(self): pass
+
+    def action(self): pass
+
+
+class CellMonolith(Cell):
+
+    def __init__(self): pass
+
+    def action(self): pass
+
+
+class CellExit(Cell):
 
     def __init__(self): pass
 
