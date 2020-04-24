@@ -4,10 +4,10 @@ from typing import Callable, Tuple
 from game.interfaces.player import Player
 
 
-class Action(metaclass=ABCMeta):
+class GameAction(metaclass=ABCMeta):
 
     @abstractmethod
-    def execute(
+    def execute_action(
             self,
             player: Player,
             action: Callable[[Tuple[int, int]], Tuple[int, int]]

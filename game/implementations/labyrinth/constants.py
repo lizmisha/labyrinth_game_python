@@ -1,4 +1,4 @@
-from game.implementations.labyrinth.actions import up, down, right, left
+from game.implementations.labyrinth.player_actions import up, down, right, left
 
 
 BOUND_SIZE = (4, 10)
@@ -7,7 +7,9 @@ TREASURE_COUNT = 1
 WORMHOLES_COUNT = 5
 EXITS_COUNT = 1
 
-ACTIONS_FROM = {
+FROM_ACTIONS = {'from down', 'from up'}
+
+ACTIONS2FROM = {
     'go up': 'from down',
     'go down': 'from up',
     'go right': 'from left',

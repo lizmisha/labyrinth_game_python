@@ -6,7 +6,7 @@ class Player(metaclass=ABCMeta):
 
     @abstractmethod
     @property
-    def coordinates(self) -> Tuple[int, int]: pass
+    def get_coordinates(self) -> Tuple[int, int]: pass
 
     @abstractmethod
     @property

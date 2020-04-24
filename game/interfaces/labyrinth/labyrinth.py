@@ -1,7 +1,9 @@
 from abc import ABCMeta, abstractmethod
 
+from game.interfaces.player import Player
+
 
 class StandardLabyrinth(metaclass=ABCMeta):
 
     @abstractmethod
-    def execute_action(self): pass
+    def execute_command(self, command: str, player: Player): pass

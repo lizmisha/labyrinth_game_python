@@ -1,9 +1,22 @@
+from typing import List
+
 from game.interfaces.labyrinth.labyrinth import StandardLabyrinth
+from game.interfaces.player import Player
+from game.implementations.labyrinth.constants import ACTIONS_FUNCTIONS
+from game.implementations.labyrinth.cells import CellBase
 
 
 class Labyrinth(StandardLabyrinth):
 
-    def __init__(self, cells):
+    def __init__(self, cells: List[List[CellBase]]):
         self.cells = cells
 
-    def execute_action(self): pass
+    def execute_command(self, command: str, player: Player):
+        coordinates = player.get_coordinates
+        new_cell_coordinates = ACTIONS_FUNCTIONS[command](coordinates)
+
+        cell = self.cells[new_cell_coordinates[0]][new_cell_coordinates[1]]
+        message, new_player_coordinates = cell.execute_command(command, player)
+
+        player.coordinates = new_player_coordinates
+        print(message)
