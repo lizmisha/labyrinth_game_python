@@ -1,43 +1,17 @@
+from typing import Tuple
+
 from game.interfaces.labyrinth.cell import Cell
 
 
-class CellEmpty(Cell):
+class CellBase(Cell):
 
-    def __init__(self): pass
+    def __init__(self, treasure: bool): pass
 
-    def action(self): pass
-
-
-class CellTreasure(Cell):
-
-    def __init__(self): pass
-
-    def action(self): pass
-
-
-class CellWormhole(Cell):
-
-    def __init__(self): pass
-
-    def action(self): pass
-
-
-class CellWall(Cell):
-
-    def __init__(self): pass
-
-    def action(self): pass
-
-
-class CellMonolith(Cell):
-
-    def __init__(self): pass
-
-    def action(self): pass
+    def action(self, command: str) -> Tuple[str, Tuple[int, int]]: pass
 
 
 class CellExit(Cell):
 
     def __init__(self): pass
 
-    def action(self): pass
+    def action(self, command: str) -> Tuple[str, Tuple[int, int]]: pass
