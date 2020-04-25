@@ -12,3 +12,6 @@ class GameAction(metaclass=ABCMeta):
             player: Player,
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
     ) -> Tuple[str, Tuple[int, int]]: pass
+
+    @abstractmethod
+    def show_command(self, command: str) -> str: pass

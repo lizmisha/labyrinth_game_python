@@ -12,3 +12,6 @@ class Cell(metaclass=ABCMeta):
     @property
     @abstractmethod
     def get_coordinates(self): pass
+
+    @abstractmethod
+    def show_cell(self): pass

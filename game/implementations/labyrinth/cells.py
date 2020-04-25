@@ -4,7 +4,7 @@ from game.interfaces.labyrinth.cell import Cell
 from game.interfaces.player import Player
 from game.implementations.labyrinth.game_actions import GameActionWall
 from game.implementations.labyrinth.constants import ACTIONS_FUNCTIONS, ACTIONS2FROM
-from game.implementations.labyrinth.cells_utils import make_closed_wall, make_monolith
+from game.implementations.labyrinth.cells_utils import make_closed_wall, make_monolith, show_center_cell
 
 
 class CellBase(Cell):
@@ -31,6 +31,20 @@ class CellBase(Cell):
 
         return isolated
 
+    def show_cell(self) -> Tuple[str, str, str]:
+        up = self.game_actions['from up'].show_command('up')
+        down = self.game_actions['from down'].show_command('down')
+
+        curr_center = ' '
+        curr_center = show_center_cell(curr_center, self.game_actions['from right'])
+        curr_center = show_center_cell(curr_center, self.game_actions['from left'])
+
+        right = self.game_actions['from right'].show_command('right')
+        left = self.game_actions['from left'].show_command('left')
+        center = right + curr_center + left
+
+        return up, center, down
+
 
 class CellMonolith(Cell):
 
@@ -46,3 +60,13 @@ class CellMonolith(Cell):
     @property
     def get_coordinates(self):
         return self.coordinates
+
+    def show_cell(self) -> Tuple[str, str, str]:
+        up = self.game_actions['from up'].show_command('up')
+        down = self.game_actions['from down'].show_command('down')
+
+        right = self.game_actions['from right'].show_command('right')
+        left = self.game_actions['from left'].show_command('left')
+        center = right + ' ' + left
+
+        return up, center, down
