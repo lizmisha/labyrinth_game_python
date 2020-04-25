@@ -1,11 +1,12 @@
 import random
 from typing import List
 
+from game.interfaces.labyrinth.cell import Cell
 from game.interfaces.labyrinth.labyrinth import StandardLabyrinth
 from game.implementations.labyrinth.labyrinth import Labyrinth
-from game.implementations.labyrinth.cells import CellBase, make_monolith_cell
-from game.implementations.labyrinth.constants import (BOUND_SIZE, TREASURE_COUNT, EXITS_COUNT, WORMHOLES_COUNT,
-                                                      ACTIONS2FROM)
+from game.implementations.labyrinth.cells import CellBase, CellMonolith
+from game.implementations.labyrinth.cells_utils import get_cell_neighbors, connect_cells
+from game.implementations.labyrinth.constants import BOUND_SIZE, TREASURE_COUNT, EXITS_COUNT, WORMHOLES_COUNT
 
 
 class LabyrinthFactory:
@@ -25,14 +26,15 @@ class LabyrinthFactory:
         self.wormholes_count = wormholes_count
         self.exits_count = exits_count
 
-    def _generate_cells(self) -> List[List[CellBase]]:
+    def _generate_cells(self) -> List[List[Cell]]:
         cells = []
         for row in range(self.size[0]):
             cells_row = []
             for column in range(self.size[1]):
-                curr_cell = CellBase()
                 if row == 0 or column == 0:
-                    curr_cell = make_monolith_cell(curr_cell)
+                    curr_cell = CellMonolith(coordinates=(row, column))
+                else:
+                    curr_cell = CellBase(coordinates=(row, column))
 
                 cells_row.append(curr_cell)
 
@@ -47,12 +49,22 @@ class LabyrinthFactory:
 
     def generate(self) -> StandardLabyrinth:
         cells = self._generate_cells()
-        labyrinth = Labyrinth(cells)
 
         init_y, init_x = self._get_random_coordinates()
-        cell = labyrinth.cells[init_y][init_x]
+        cell = cells[init_y][init_x]
 
         visited_cells_num = 1
         cells_stack = []
+        while visited_cells_num < (2 * self.size[0] + 2 * self.size[1] - 4):
+            neighbors = [curr_cell for curr_cell in get_cell_neighbors(cell, cells) if curr_cell[0].is_isolated]
+            if neighbors:
+                visited_cells_num += 1
+                cells_stack.append(cell)
+                curr_neighbor = random.choice(neighbors)
+                connect_cells(cell, curr_neighbor)
+                cell = curr_neighbor[0]
+            else:
+                cell = cells_stack.pop()
 
+        labyrinth = Labyrinth(cells)
         return labyrinth

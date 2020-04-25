@@ -11,4 +11,4 @@ class Cell(metaclass=ABCMeta):
 
     @property
     @abstractmethod
-    def is_isolated(self) -> bool: pass
+    def get_coordinates(self): pass

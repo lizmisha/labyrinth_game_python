@@ -2,20 +2,26 @@ from typing import Tuple
 
 from game.interfaces.labyrinth.cell import Cell
 from game.interfaces.player import Player
-from game.implementations.labyrinth.game_actions import GameActionMonolith, GameActionWall
-from game.implementations.labyrinth.constants import ACTIONS_FUNCTIONS, ACTIONS2FROM, FROM_ACTIONS
+from game.implementations.labyrinth.game_actions import GameActionWall
+from game.implementations.labyrinth.constants import ACTIONS_FUNCTIONS, ACTIONS2FROM
+from game.implementations.labyrinth.cells_utils import make_closed_wall, make_monolith
 
 
 class CellBase(Cell):
 
-    def __init__(self, treasure: bool = False):
+    def __init__(self, coordinates: Tuple[int, int], treasure: bool = False):
+        self.coordinates = coordinates
         self.treasure = treasure
-        self.game_actions = dict()
+        self.game_actions = make_closed_wall()
 
     def execute_command(self, command: str, player: Player) -> Tuple[str, Tuple[int, int]]:
         player_action = ACTIONS_FUNCTIONS[command]
         from_action = ACTIONS2FROM[command]
         return self.game_actions[from_action].execute_action(player, player_action)
+
+    @property
+    def get_coordinates(self):
+        return self.coordinates
 
     @property
     def is_isolated(self) -> bool:
@@ -26,15 +32,17 @@ class CellBase(Cell):
         return isolated
 
 
-def make_monolith_cell(cell: CellBase) -> CellBase:
-    for from_action in FROM_ACTIONS:
-        cell.game_actions[from_action] = GameActionMonolith()
+class CellMonolith(Cell):
 
-    return cell
+    def __init__(self, coordinates: Tuple[int, int]):
+        self.coordinates = coordinates
+        self.game_actions = make_monolith()
 
+    def execute_command(self, command: str, player: Player) -> Tuple[str, Tuple[int, int]]:
+        player_action = ACTIONS_FUNCTIONS[command]
+        from_action = ACTIONS2FROM[command]
+        return self.game_actions[from_action].execute_action(player, player_action)
 
-def make_closed_cell(cell: CellBase) -> CellBase:
-    for from_action in FROM_ACTIONS:
-        cell.game_actions[from_action] = GameActionWall()
-
-    return cell
+    @property
+    def get_coordinates(self):
+        return self.coordinates

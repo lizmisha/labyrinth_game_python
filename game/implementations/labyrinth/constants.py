@@ -1,4 +1,4 @@
-from game.implementations.labyrinth.player_actions import up, down, right, left
+from game.implementations.player_actions import up, down, right, left
 
 
 BOUND_SIZE = (4, 10)
@@ -14,6 +14,13 @@ ACTIONS2FROM = {
     'go down': 'from up',
     'go right': 'from left',
     'go left': 'from right'
+}
+
+ACTIONS_FROM_REVERSE = {
+    'from down': 'from up',
+    'from up': 'from down',
+    'from left': 'from right',
+    'from right': 'from left'
 }
 
 ACTIONS_FUNCTIONS = {
