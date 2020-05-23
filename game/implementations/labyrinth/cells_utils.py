@@ -19,7 +19,10 @@ def make_monolith() -> Dict[str, GameAction]:
 def make_closed_wall() -> Dict[str, GameAction]:
     game_actions = dict()
     for from_action in FROM_ACTIONS:
-        game_actions[from_action] = GameActionWall()
+        if from_action == 'skip':
+            game_actions[from_action] = GameActionExecuted()
+        else:
+            game_actions[from_action] = GameActionWall()
 
     return game_actions
 
@@ -70,6 +73,9 @@ def get_cell_neighbors(
 ) -> List[Tuple[Cell, str]]:
     neighbors = []
     for action_name in ACTIONS_FUNCTIONS:
+        if action_name == 'skip':
+            continue
+
         cell_neighbor_coordinates = ACTIONS_FUNCTIONS[action_name](curr_cell.get_coordinates)
         if not is_correct_coordinate(cell_neighbor_coordinates, (len(cells), len(cells[0]))):
             continue

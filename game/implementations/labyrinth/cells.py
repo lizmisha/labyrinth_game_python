@@ -19,7 +19,7 @@ class CellBase(Cell):
 
         self.cell_center = ' '
 
-    def execute_command(self, command: str, player: Player) -> Tuple[str, Tuple[int, int]]:
+    def execute_command(self, command: str, player: Player) -> Tuple[str, Tuple[int, int], bool]:
         player_action = ACTIONS_FUNCTIONS[command]
         from_action = ACTIONS2FROM[command]
         return self.game_actions[from_action].execute_action(player, player_action)
@@ -31,8 +31,9 @@ class CellBase(Cell):
     @property
     def is_isolated(self) -> bool:
         isolated = True
-        for game_action in self.game_actions.values():
-            isolated *= (isinstance(game_action, GameActionWall) or isinstance(game_action, GameActionMonolith))
+        for action, game_action in self.game_actions.items():
+            if action != 'skip':
+                isolated *= (isinstance(game_action, GameActionWall) or isinstance(game_action, GameActionMonolith))
 
         return isolated
 
@@ -53,7 +54,7 @@ class CellMonolithBase(CellMonolith):
         self.game_actions = make_monolith()
         self.cell_center = sym_monolith
 
-    def execute_command(self, command: str, player: Player) -> Tuple[str, Tuple[int, int]]:
+    def execute_command(self, command: str, player: Player) -> Tuple[str, Tuple[int, int], bool]:
         player_action = ACTIONS_FUNCTIONS[command]
         from_action = ACTIONS2FROM[command]
         return self.game_actions[from_action].execute_action(player, player_action)

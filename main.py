@@ -1,7 +1,6 @@
-from game.implementations.labyrinth.factory import LabyrinthFactory
+from service.implementations.games import GameBase
 
 
 if __name__ == '__main__':
-    labyrinth_factory = LabyrinthFactory(10)
-    labyrinth = labyrinth_factory.generate()
-    labyrinth.show_map()
+    game = GameBase()
+    game.start()

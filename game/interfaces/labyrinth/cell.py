@@ -12,7 +12,7 @@ class Cell(metaclass=ABCMeta):
         self.cell_center = ' '
 
     @abstractmethod
-    def execute_command(self, command: str, player: Player) -> Tuple[str, Tuple[int, int]]: pass
+    def execute_command(self, command: str, player: Player) -> Tuple[str, Tuple[int, int], bool]: pass
 
     @property
     @abstractmethod
@@ -33,7 +33,7 @@ class CellMonolith(metaclass=ABCMeta):
         self.cell_center = sym_monolith
 
     @abstractmethod
-    def execute_command(self, command: str, player: Player) -> Tuple[str, Tuple[int, int]]: pass
+    def execute_command(self, command: str, player: Player) -> Tuple[str, Tuple[int, int], bool]: pass
 
     @property
     @abstractmethod

@@ -19,8 +19,8 @@ class GameActionWall(GameAction):
             self,
             player: Player,
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
-    ) -> Tuple[str, Tuple[int, int]]:
-        return self.message, player.get_coordinates
+    ) -> Tuple[str, Tuple[int, int], bool]:
+        return self.message, player.get_coordinates, False
 
     def show_command(self, command: str) -> str:
         return self.show[command]
@@ -42,8 +42,8 @@ class GameActionWormhole(GameAction):
             self,
             player: Player,
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
-    ) -> Tuple[str, Tuple[int, int]]:
-        return self.message, self.coordinates_next
+    ) -> Tuple[str, Tuple[int, int], bool]:
+        return self.message, self.coordinates_next, False
 
     def show_command(self, command: str) -> str:
         return self.show[command]
@@ -64,9 +64,9 @@ class GameActionTreasure(GameAction):
             self,
             player: Player,
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
-    ) -> Tuple[str, Tuple[int, int]]:
+    ) -> Tuple[str, Tuple[int, int], bool]:
         player.treasure = True
-        return self.message, action(player.get_coordinates)
+        return self.message, action(player.get_coordinates), False
 
     def show_command(self, command: str) -> str:
         return self.show[command]
@@ -87,8 +87,8 @@ class GameActionMonolith(GameAction):
             self,
             player: Player,
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
-    ) -> Tuple[str, Tuple[int, int]]:
-        return self.message, player.get_coordinates
+    ) -> Tuple[str, Tuple[int, int], bool]:
+        return self.message, player.get_coordinates, False
 
     def show_command(self, command: str) -> str:
         return self.show[command]
@@ -109,8 +109,8 @@ class GameActionExecuted(GameAction):
             self,
             player: Player,
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
-    ) -> Tuple[str, Tuple[int, int]]:
-        return self.message, action(player.get_coordinates)
+    ) -> Tuple[str, Tuple[int, int], bool]:
+        return self.message, action(player.get_coordinates), False
 
     def show_command(self, command: str) -> str:
         return self.show[command]
@@ -132,8 +132,8 @@ class GameActionRiver(GameAction):
             self,
             player: Player,
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
-    ) -> Tuple[str, Tuple[int, int]]:
-        return self.message, self.coordinates_next
+    ) -> Tuple[str, Tuple[int, int], bool]:
+        return self.message, self.coordinates_next, False
 
     def show_command(self, command: str) -> str:
         return self.show[command]
@@ -148,8 +148,8 @@ class GameActionNothing(GameAction):
             self,
             player: Player,
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
-    ) -> Tuple[str, Tuple[int, int]]:
-        return self.message, action(player.get_coordinates)
+    ) -> Tuple[str, Tuple[int, int], bool]:
+        return self.message, action(player.get_coordinates), False
 
     def show_command(self, command: str) -> str:
         return ' '
@@ -171,11 +171,11 @@ class GameActionExit(GameAction):
             self,
             player: Player,
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
-    ) -> Tuple[str, Tuple[int, int]]:
+    ) -> Tuple[str, Tuple[int, int], bool]:
         if player.have_treasure:
-            return self.funny_message, player.get_coordinates
+            return self.funny_message, player.get_coordinates, True
 
-        return self.sad_message, player.get_coordinates
+        return self.sad_message, player.get_coordinates, False
 
     def show_command(self, command: str) -> str:
         return self.show[command]
