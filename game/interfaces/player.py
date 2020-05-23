@@ -4,10 +4,9 @@ from typing import Tuple
 
 class Player(metaclass=ABCMeta):
 
-    @abstractmethod
-    @property
-    def get_coordinates(self) -> Tuple[int, int]: pass
+    def __init__(self):
+        self.have_treasure = False
 
-    @abstractmethod
     @property
-    def have_treasure(self) -> bool: pass
+    @abstractmethod
+    def get_coordinates(self) -> Tuple[int, int]: pass

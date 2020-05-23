@@ -9,11 +9,10 @@ class GameActionWall(GameAction):
     def __init__(self):
         self.message = 'step impossible, wall'
         self.show = {
-            'up': ' _ ',
+            'up': '_',
             'left': '|',
             'right': '|',
-            'center': ' ',
-            'down': ' \u035E ',
+            'down': '\u25AC',
         }
 
     def execute_action(
@@ -33,11 +32,10 @@ class GameActionWormhole(GameAction):
         self.coordinates_next = coordinates_next
         self.message = 'step executed, wormhole'
         self.show = {
-            'up': '   ',
+            'up': ' ',
             'left': ' ',
             'right': ' ',
-            'center': '@',
-            'down': '   ',
+            'down': ' ',
         }
 
     def execute_action(
@@ -56,11 +54,10 @@ class GameActionTreasure(GameAction):
     def __init__(self):
         self.message = 'step executed, treasure'
         self.show = {
-            'up': '   ',
+            'up': ' ',
             'left': ' ',
             'right': ' ',
-            'center': 'x',
-            'down': '   ',
+            'down': ' ',
         }
 
     def execute_action(
@@ -80,11 +77,10 @@ class GameActionMonolith(GameAction):
     def __init__(self):
         self.message = 'step impossible, monolith'
         self.show = {
-            'up': ' _ ',
+            'up': '_',
             'left': '|',
             'right': '|',
-            'center': ' ',
-            'down': ' \u035E ',
+            'down': '\u25AC',
         }
 
     def execute_action(
@@ -103,11 +99,10 @@ class GameActionExecuted(GameAction):
     def __init__(self):
         self.message = 'step executed'
         self.show = {
-            'up': '   ',
+            'up': ' ',
             'left': ' ',
             'right': ' ',
-            'center': ' ',
-            'down': '   ',
+            'down': ' ',
         }
 
     def execute_action(
@@ -116,6 +111,29 @@ class GameActionExecuted(GameAction):
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
     ) -> Tuple[str, Tuple[int, int]]:
         return self.message, action(player.get_coordinates)
+
+    def show_command(self, command: str) -> str:
+        return self.show[command]
+
+
+class GameActionRiver(GameAction):
+
+    def __init__(self, coordinates_next: Tuple[int, int]):
+        self.message = 'step executed, river'
+        self.coordinates_next = coordinates_next
+        self.show = {
+            'up': ' ',
+            'left': ' ',
+            'right': ' ',
+            'down': ' ',
+        }
+
+    def execute_action(
+            self,
+            player: Player,
+            action: Callable[[Tuple[int, int]], Tuple[int, int]]
+    ) -> Tuple[str, Tuple[int, int]]:
+        return self.message, self.coordinates_next
 
     def show_command(self, command: str) -> str:
         return self.show[command]
@@ -143,11 +161,10 @@ class GameActionExit(GameAction):
         self.funny_message = 'congratulations, you passed the game!'
         self.sad_message = 'you can`t exit, because you haven`t treasure :('
         self.show = {
-            'up': '   ',
+            'up': ' ',
             'left': ' ',
             'right': ' ',
-            'center': ' ',
-            'down': '   ',
+            'down': ' ',
         }
 
     def execute_action(
