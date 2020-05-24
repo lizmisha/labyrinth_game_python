@@ -1,11 +1,11 @@
 from typing import Tuple
 
-from game.interfaces.labyrinth.cell import Cell, CellMonolith
 from game.interfaces.player import Player
-from game.implementations.labyrinth.game_actions import GameActionWall, GameActionMonolith
-from game.implementations.labyrinth.constants import ACTIONS_FUNCTIONS, ACTIONS2FROM
-from game.implementations.labyrinth.cells_utils import make_closed_wall, make_monolith
-from game.implementations.labyrinth.visualize_constants import sym_monolith
+from labyrinth.interfaces.cell import Cell, CellMonolith
+from labyrinth.implementations.game_actions import GameActionWall, GameActionMonolith
+from labyrinth.implementations.constants import ACTIONS_FUNCTIONS, ACTIONS2FROM
+from labyrinth.implementations.cells_utils import make_closed_wall, make_monolith
+from labyrinth.implementations.visualize_constants import sym_monolith
 
 
 class CellBase(Cell):

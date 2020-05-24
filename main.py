@@ -1,4 +1,4 @@
-from service.implementations.games import GameBase
+from game.implementations.games import GameBase
 
 
 if __name__ == '__main__':

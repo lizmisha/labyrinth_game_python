@@ -1,14 +1,14 @@
 import random
 from typing import List, Tuple, Union
 
-from game.interfaces.labyrinth.cell import Cell, CellMonolith
-from game.interfaces.labyrinth.labyrinth import StandardLabyrinth
-from game.implementations.labyrinth.labyrinth import Labyrinth
-from game.implementations.labyrinth.cells import CellBase, CellMonolithBase
-from game.implementations.labyrinth.cells_utils import (get_cell_neighbors, connect_cells, make_exit, make_treasure,
-                                                        make_wormholes)
-from game.implementations.labyrinth.constants import (BOUND_SIZE, TREASURE_COUNT, EXITS_COUNT, WORMHOLES_COUNT,
-                                                      RIVERS_COUNT)
+from labyrinth.interfaces.cell import Cell, CellMonolith
+from labyrinth.interfaces.labyrinth import StandardLabyrinth
+from labyrinth.implementations.labyrinth import Labyrinth
+from labyrinth.implementations.cells import CellBase, CellMonolithBase
+from labyrinth.implementations.cells_utils import (get_cell_neighbors, connect_cells, make_exit, make_treasure,
+                                                   make_wormholes, make_river)
+from labyrinth.implementations.constants import (BOUND_SIZE, TREASURE_COUNT, EXITS_COUNT, WORMHOLES_COUNT,
+                                                 RIVERS_COUNT, BOUND_RIVER_LEN, RIVER_MAKE_CHANCES)
 
 
 class LabyrinthFactory:
@@ -17,6 +17,7 @@ class LabyrinthFactory:
             self,
             size: int,
             rivers_count: int = RIVERS_COUNT,
+            rivers_bound: Tuple[int, int] = BOUND_RIVER_LEN,
             treasure_count: int = TREASURE_COUNT,
             wormholes_count: int = WORMHOLES_COUNT,
             exits_count: int = EXITS_COUNT
@@ -26,6 +27,7 @@ class LabyrinthFactory:
 
         self.size = (size, size)
         self.rivers_count = rivers_count
+        self.rivers_bound = rivers_bound
         self.treasure_count = treasure_count
         self.wormholes_count = wormholes_count
         self.exits_count = exits_count
@@ -53,10 +55,24 @@ class LabyrinthFactory:
         return y, x
 
     def _generate_rivers(self, cells: List[List[Union[Cell, CellMonolith]]], empty_cells: List[Tuple[int, int]]):
-        pass
+        for _ in range(self.rivers_count):
+            river_len = random.choice(range(self.rivers_bound[0], self.rivers_bound[1] + 1))
+            is_make = False
+            for _ in range(RIVER_MAKE_CHANCES):
+                is_make = make_river(empty_cells, cells, river_len)
+                if is_make:
+                    break
+
+            if not is_make:
+                print('Can`t create all rivers')
+                break
 
     def _generate_treasures(self, cells: List[List[Union[Cell, CellMonolith]]], empty_cells: List[Tuple[int, int]]):
         for _ in range(self.treasure_count):
+            if not empty_cells:
+                print('Can`t create all treasures')
+                break
+
             idx_cell = random.choice(range(len(empty_cells)))
             treasure_coord = empty_cells[idx_cell]
             make_treasure(cells[treasure_coord[0]][treasure_coord[1]])
@@ -65,17 +81,23 @@ class LabyrinthFactory:
     def _generate_wormholes(self, cells: List[List[Union[Cell, CellMonolith]]], empty_cells: List[Tuple[int, int]]):
         wormholes_coord = []
         for _ in range(self.wormholes_count):
+            if not empty_cells:
+                print('Can`t create all wormholes')
+                break
+
             idx = random.choice(range(len(empty_cells)))
             wormholes_coord.append(empty_cells[idx])
             empty_cells.pop(idx)
 
-        make_wormholes(wormholes_coord, cells)
+        if wormholes_coord:
+            make_wormholes(wormholes_coord, cells)
 
     def _generate_exits(self, cells: List[List[Union[Cell, CellMonolith]]]):
-        coord = random.choice(range(1, self.size[0] - 2))
-        sides = [(0, coord), (self.size[0] - 1, coord), (coord, 0), (coord, self.size[1] - 1)]
-        ex_coord = random.choice(sides)
-        make_exit(cells[ex_coord[0]][ex_coord[1]], cells)
+        for _ in range(self.exits_count):
+            coord = random.choice(range(1, self.size[0] - 2))
+            sides = [(0, coord), (self.size[0] - 1, coord), (coord, 0), (coord, self.size[1] - 1)]
+            ex_coord = random.choice(sides)
+            make_exit(cells[ex_coord[0]][ex_coord[1]], cells)
 
     def generate(self) -> StandardLabyrinth:
         cells, empty_cells = self._generate_cells()

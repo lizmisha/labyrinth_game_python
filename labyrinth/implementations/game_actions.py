@@ -1,7 +1,7 @@
 from typing import Callable, Tuple
 
-from game.interfaces.labyrinth.game_action import GameAction
 from game.interfaces.player import Player
+from labyrinth.interfaces.game_action import GameAction
 
 
 class GameActionWall(GameAction):
@@ -158,7 +158,7 @@ class GameActionNothing(GameAction):
 class GameActionExit(GameAction):
 
     def __init__(self):
-        self.funny_message = 'congratulations, you passed the game!'
+        self.funny_message = 'congratulations, you passed the labyrinth!'
         self.sad_message = 'you can`t exit, because you haven`t treasure :('
         self.show = {
             'up': ' ',

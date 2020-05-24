@@ -1,7 +1,7 @@
 from typing import Tuple
 
 from game.interfaces.player import Player
-from game.implementations.labyrinth.visualize_constants import sym_player
+from labyrinth.implementations.visualize_constants import sym_player
 
 
 class PlayerBase(Player):

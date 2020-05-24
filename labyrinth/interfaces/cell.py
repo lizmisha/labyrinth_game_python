@@ -2,7 +2,7 @@ from abc import ABCMeta, abstractmethod
 from typing import Tuple
 
 from game.interfaces.player import Player
-from game.implementations.labyrinth.visualize_constants import sym_monolith
+from labyrinth.implementations.visualize_constants import sym_monolith
 
 
 class Cell(metaclass=ABCMeta):

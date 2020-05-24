@@ -1,9 +1,9 @@
 from typing import List, Union, Tuple
 
-from game.interfaces.labyrinth.cell import Cell, CellMonolith
-from game.interfaces.labyrinth.labyrinth import StandardLabyrinth
 from game.interfaces.player import Player
-from game.implementations.labyrinth.constants import ACTIONS_FUNCTIONS
+from labyrinth.interfaces.cell import Cell, CellMonolith
+from labyrinth.interfaces.labyrinth import StandardLabyrinth
+from labyrinth.implementations.constants import ACTIONS_FUNCTIONS
 
 
 class Labyrinth(StandardLabyrinth):
@@ -14,6 +14,9 @@ class Labyrinth(StandardLabyrinth):
         self.previous_center_cell = ' '
 
     def execute_command(self, command: str, player: Player) -> Tuple[bool, str]:
+        if command not in ACTIONS_FUNCTIONS:
+            raise KeyError('Unknown command')
+
         coordinates = player.get_coordinates
         self.cells[coordinates[0]][coordinates[1]].cell_center = self.previous_center_cell
 

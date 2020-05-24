@@ -2,7 +2,8 @@ from game.implementations.player_actions import up, down, right, left, skip
 
 
 BOUND_SIZE = (4, 10)
-BOUND_RIVER_LEN = (2, 3)
+BOUND_RIVER_LEN = (3, 4)
+RIVER_MAKE_CHANCES = 3
 
 TREASURE_COUNT = 1
 WORMHOLES_COUNT = 5
