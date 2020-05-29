@@ -7,4 +7,7 @@ class Game(metaclass=ABCMeta):
     def start(self): pass
 
     @abstractmethod
+    def save(self, filename: str): pass
+
+    @abstractmethod
     def game(self): pass

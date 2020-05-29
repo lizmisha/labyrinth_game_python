@@ -1,6 +1,6 @@
-from game.implementations.games import GameBase
+from game.implementations.games import GameBear
 
 
 if __name__ == '__main__':
-    game = GameBase()
+    game = GameBear()
     game.start()

@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
-from typing import Callable, Tuple
+from typing import Callable, Tuple, Union
 
-from game.interfaces.player import Player
+from game.interfaces.player import Player, Bear
 
 
 class GameAction(metaclass=ABCMeta):
@@ -9,7 +9,7 @@ class GameAction(metaclass=ABCMeta):
     @abstractmethod
     def execute_action(
             self,
-            player: Player,
+            player: Union[Player, Bear],
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
     ) -> Tuple[str, Tuple[int, int], bool]: pass
 

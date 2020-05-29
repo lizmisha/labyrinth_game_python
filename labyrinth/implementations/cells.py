@@ -5,7 +5,7 @@ from labyrinth.interfaces.cell import Cell, CellMonolith
 from labyrinth.implementations.game_actions import GameActionWall, GameActionMonolith
 from labyrinth.implementations.constants import ACTIONS_FUNCTIONS, ACTIONS2FROM
 from labyrinth.implementations.cells_utils import make_closed_wall, make_monolith
-from labyrinth.implementations.visualize_constants import sym_monolith
+from labyrinth.implementations.visualize_constants import SYM_MONOLITH
 
 
 class CellBase(Cell):
@@ -52,7 +52,7 @@ class CellMonolithBase(CellMonolith):
 
         self.coordinates = coordinates
         self.game_actions = make_monolith()
-        self.cell_center = sym_monolith
+        self.cell_center = SYM_MONOLITH
 
     def execute_command(self, command: str, player: Player) -> Tuple[str, Tuple[int, int], bool]:
         player_action = ACTIONS_FUNCTIONS[command]

@@ -3,7 +3,7 @@ from typing import List, Tuple, Union
 
 from labyrinth.interfaces.cell import Cell, CellMonolith
 from labyrinth.interfaces.labyrinth import StandardLabyrinth
-from labyrinth.implementations.labyrinth import Labyrinth
+from labyrinth.implementations.labyrinth_utils import get_labyrinth
 from labyrinth.implementations.cells import CellBase, CellMonolithBase
 from labyrinth.implementations.cells_utils import (get_cell_neighbors, connect_cells, make_exit, make_treasure,
                                                    make_wormholes, make_river)
@@ -16,6 +16,7 @@ class LabyrinthFactory:
     def __init__(
             self,
             size: int,
+            labyrinth_type: str,
             rivers_count: int = RIVERS_COUNT,
             rivers_bound: Tuple[int, int] = BOUND_RIVER_LEN,
             treasure_count: int = TREASURE_COUNT,
@@ -31,6 +32,10 @@ class LabyrinthFactory:
         self.treasure_count = treasure_count
         self.wormholes_count = wormholes_count
         self.exits_count = exits_count
+
+        self.labyrinth = get_labyrinth(labyrinth_type)
+        if self.labyrinth is None:
+            raise NotImplementedError(f'Labyrinth type {labyrinth_type} not implemented')
 
     def _generate_cells(self) -> Tuple[List[List[Union[Cell, CellMonolith]]], List[Tuple[int, int]]]:
         cells = []
@@ -123,5 +128,4 @@ class LabyrinthFactory:
         self._generate_wormholes(cells, empty_cells)
         self._generate_exits(cells)
 
-        labyrinth = Labyrinth(cells, empty_cells)
-        return labyrinth
+        return self.labyrinth(cells, empty_cells)

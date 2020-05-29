@@ -1,6 +1,6 @@
-from typing import Callable, Tuple
+from typing import Callable, Tuple, Union
 
-from game.interfaces.player import Player
+from game.interfaces.player import Player, Bear
 from labyrinth.interfaces.game_action import GameAction
 
 
@@ -17,7 +17,7 @@ class GameActionWall(GameAction):
 
     def execute_action(
             self,
-            player: Player,
+            player: Union[Player, Bear],
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
     ) -> Tuple[str, Tuple[int, int], bool]:
         return self.message, player.get_coordinates, False
@@ -40,7 +40,7 @@ class GameActionWormhole(GameAction):
 
     def execute_action(
             self,
-            player: Player,
+            player: Union[Player, Bear],
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
     ) -> Tuple[str, Tuple[int, int], bool]:
         return self.message, self.coordinates_next, False
@@ -62,7 +62,7 @@ class GameActionTreasure(GameAction):
 
     def execute_action(
             self,
-            player: Player,
+            player: Union[Player, Bear],
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
     ) -> Tuple[str, Tuple[int, int], bool]:
         player.treasure = True
@@ -85,7 +85,7 @@ class GameActionMonolith(GameAction):
 
     def execute_action(
             self,
-            player: Player,
+            player: Union[Player, Bear],
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
     ) -> Tuple[str, Tuple[int, int], bool]:
         return self.message, player.get_coordinates, False
@@ -107,7 +107,7 @@ class GameActionExecuted(GameAction):
 
     def execute_action(
             self,
-            player: Player,
+            player: Union[Player, Bear],
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
     ) -> Tuple[str, Tuple[int, int], bool]:
         return self.message, action(player.get_coordinates), False
@@ -130,7 +130,7 @@ class GameActionRiver(GameAction):
 
     def execute_action(
             self,
-            player: Player,
+            player: Union[Player, Bear],
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
     ) -> Tuple[str, Tuple[int, int], bool]:
         return self.message, self.coordinates_next, False
@@ -146,7 +146,7 @@ class GameActionNothing(GameAction):
 
     def execute_action(
             self,
-            player: Player,
+            player: Union[Player, Bear],
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
     ) -> Tuple[str, Tuple[int, int], bool]:
         return self.message, action(player.get_coordinates), False
@@ -169,7 +169,7 @@ class GameActionExit(GameAction):
 
     def execute_action(
             self,
-            player: Player,
+            player: Union[Player, Bear],
             action: Callable[[Tuple[int, int]], Tuple[int, int]]
     ) -> Tuple[str, Tuple[int, int], bool]:
         if player.have_treasure:

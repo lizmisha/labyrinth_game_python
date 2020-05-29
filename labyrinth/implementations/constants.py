@@ -9,6 +9,10 @@ TREASURE_COUNT = 1
 WORMHOLES_COUNT = 5
 EXITS_COUNT = 1
 RIVERS_COUNT = 1
+PLAYER_HEALTH = 2
+
+BEAR_DAMAGE_MESSAGE = 'You received damage from the bear'
+BEAR_KILL_MESSAGE = 'Game Over. The bear ate you.'
 
 FROM_ACTIONS = {'from down', 'from up', 'from right', 'from left', 'skip'}
 

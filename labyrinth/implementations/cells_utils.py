@@ -4,7 +4,7 @@ from typing import Dict, List, Tuple, Union, Set
 from labyrinth.interfaces.cell import Cell, CellMonolith
 from labyrinth.interfaces.game_action import GameAction
 from labyrinth.implementations.constants import ACTIONS_FUNCTIONS, ACTIONS2FROM, ACTIONS_FROM_REVERSE, FROM_ACTIONS
-from labyrinth.implementations.visualize_constants import sym_treasure, sym_wormhole, sym_river
+from labyrinth.implementations.visualize_constants import SYM_TREASURE, SYM_WORMHOLE, SYM_RIVER
 from labyrinth.implementations.game_actions import (GameActionMonolith, GameActionWall, GameActionTreasure,
                                                     GameActionExecuted, GameActionExit, GameActionWormhole,
                                                     GameActionRiver)
@@ -42,13 +42,12 @@ def choose_river_cell(
         if neighbor_coord not in neighbors_coord and not isinstance(neighbor_cell.game_actions[action], GameActionWall):
             neighbors.append(neighbor_coord)
 
-    if not neighbors:
+    if len(neighbors) == 0:
         return None, neighbors_coord
 
     river_idx = random.choice(range(len(neighbors)))
     river_coord = neighbors[river_idx]
-    for coord in neighbors:
-        neighbors_coord.add(coord)
+    neighbors_coord.add(river_coord)
 
     return river_coord, neighbors_coord
 
@@ -57,7 +56,7 @@ def make_rivers_cells(rivers_coords: List[Tuple[int, int]], cells: List[List[Uni
     for idx in range(len(rivers_coords)):
         curr_coord = rivers_coords[idx]
         curr_cell = cells[curr_coord[0]][curr_coord[1]]
-        curr_cell.cell_center = sym_river
+        curr_cell.cell_center = SYM_RIVER
         if idx + 2 < len(rivers_coords):
             next_coord = rivers_coords[idx + 2]
         else:
@@ -100,18 +99,18 @@ def make_river(
             river_coords.insert(0, curr_coord)
             curr_cell = cells[curr_coord[0]][curr_coord[1]]
 
+    if len(river_coords) < river_len:
+        return False
+
     for curr_coord in river_coords:
         empty_coords.remove(curr_coord)
 
-    if len(river_coords) < river_len:
-        return False
-    else:
-        make_rivers_cells(river_coords, cells)
-        return True
+    make_rivers_cells(river_coords, cells)
+    return True
 
 
 def make_treasure(curr_cell: Cell):
-    curr_cell.cell_center = sym_treasure
+    curr_cell.cell_center = SYM_TREASURE
     for action in FROM_ACTIONS:
         if isinstance(curr_cell.game_actions[action], GameActionExecuted):
             curr_cell.game_actions[action] = GameActionTreasure()
@@ -123,7 +122,7 @@ def make_wormholes(coords: List[Tuple[int, int]], cells: List[List[Union[Cell, C
         next_coord = coords[next_idx]
 
         curr_cell = cells[curr_coord[0]][curr_coord[1]]
-        curr_cell.cell_center = sym_wormhole
+        curr_cell.cell_center = SYM_WORMHOLE
         for action in FROM_ACTIONS:
             if isinstance(curr_cell.game_actions[action], GameActionExecuted):
                 curr_cell.game_actions[action] = GameActionWormhole(next_coord)
